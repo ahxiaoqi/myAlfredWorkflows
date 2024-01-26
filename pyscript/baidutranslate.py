@@ -1,10 +1,16 @@
+import json
 import random
 import string
 import hashlib
-from urllib.parse import quote
+from urllib.parse import quote,unquote
 import requests
 import sys
+import os
 import re
+
+appid = os.getenv('bdTranslateAppid')
+key = os.getenv('bdTranslateKey')
+
 
 def contains_english(string):
     pattern = r'[a-zA-Z]'
@@ -48,7 +54,7 @@ def buildUrl(query):
     ## 随机字符串
     randomStr = generate_random_string(10)
     ## 签名字符串
-    signStr = signTemplate.substitute(appid="{appId}",q=query,salt=randomStr,key="{key}")
+    signStr = signTemplate.substitute(appid=appid,q=query,salt=randomStr,key=key)
     ## md5签名
     md5_hash = calculate_md5(signStr)
     ## 最后的url地址
@@ -57,7 +63,8 @@ def buildUrl(query):
     if (contains_english(query)):
         froms = "en"
         to = "zh"
-    return template.substitute(q=quote(query),froml=froms,to=to,appid="{appId}",salt=randomStr,sign=md5_hash)
+    return template.substitute(q=quote(query),froml=froms,to=to,appid=appid,salt=randomStr,sign=md5_hash)
+
 
 args = sys.argv;
 if (len(args) > 0):
