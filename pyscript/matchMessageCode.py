@@ -1,8 +1,10 @@
 import re
 import json
 import sqlite3
+import os
+userDir = os.getenv('userDir')
 
-dbpath = "/Users/suzhiwei/Library/Messages/chat.db"
+dbpath = "/Users/"+userDir+"/Library/Messages/chat.db"
 conn = sqlite3.connect(dbpath)
 cursor = conn.cursor()
 cursor.execute('SELECT text FROM message WHERE datetime(date/1000000000 + 978307200,"unixepoch","localtime") > datetime("now","localtime","-60 second") ORDER BY date DESC limit 1;')
@@ -20,14 +22,14 @@ if (len(result) == 1):
                 'title': code,
                 'subtitle': message,
                 'arg': code,
-                'icon': {'type': 'filetype', 'path': 'icon.png'}
+                'icon': {'path': 'message-code.png'}
                 })
 else:
     items.append({
                 'title': '暂无验证码',
                 'subtitle': '暂无验证码',
                 'arg': '',
-                'icon': {'type': 'filetype', 'path': 'icon.png'}
+                'icon': {'path': 'None.png'}
                 })
 
 result = {}    
