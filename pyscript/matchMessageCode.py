@@ -14,7 +14,7 @@ if (len(result) == 1):
     message = str(result[0][0])
     #message = "614530 ,这是您的动态验证码，5分钟内有效【12321】"
     # 使用正则表达式提取数字部分
-    match = re.findall(r'(?<![[-【])\d{4,}(?![\]】])', message)
+    match = re.findall(r"(?<![\[【-])\d{4,}(?![]】])", message)
     
     if match:
         for code in match:
