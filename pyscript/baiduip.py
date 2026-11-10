@@ -6,8 +6,13 @@ def getBaiDuip(ip):
     output = subprocess.check_output(cmd, shell=True)
     resp = output.decode("utf-8").strip()
     return resp
-resp = json.loads(getBaiDuip("{query}"))["data"]
-str = resp["country"]+resp["province"]+resp["city"]+resp["isp"]
+resp = json.loads(getBaiDuip("{query}")).get("data") or {}
+
+def field(key):
+    value = resp.get(key)
+    return str(value) if value is not None else ""
+
+str = field("country") + field("province") + field("city") + field("isp")
 items = [{
             'title': "{query}",
             'subtitle': str,
